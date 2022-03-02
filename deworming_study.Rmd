@@ -1,0 +1,258 @@
+---
+title: "Deworming Survey RCT"
+author: "Georgianna James"
+date: '2022-03-02'
+output: github_document
+---
+
+### Required Packages
+
+```{r message=FALSE, warning=FALSE}
+library(survey)
+library(tidyverse)
+library(stargazer)
+library(knitr)
+
+```
+
+
+```{r include=FALSE}
+
+#reading and naming the data 
+
+worms <- read_csv("/Users/georgiannajames/Desktop/winter 2022/ECON15510/pset2_data/worms_main.csv")
+attrition <- read_csv("/Users/georgiannajames/Desktop/winter 2022/ECON15510/pset2_data/worms_attrition.csv")
+
+
+
+```
+
+# Replicating an RCT
+
+## Treatment Effect Estimation
+
+
+
+```{r include=FALSE}
+
+# defining survey object
+  
+design <- svydesign(data = worms, ids = ~psdpsch98 + pupid, weights = ~ weight)
+
+
+
+design
+```
+
+```{r include=FALSE}
+
+# creating regression model for total earnings 
+
+model_tot_earn12m_t <- svyglm(tot_earn12m_t ~ treatment, design)
+
+model_tot_earn12m_t
+
+summary(model_tot_earn12m_t)
+```
+```{r include=FALSE}
+
+# creating regression model for total consuption 
+
+model_tot_cnsp_t  <- svyglm(tot_cnsp_t ~ treatment, design)
+
+model_tot_cnsp_t 
+
+summary(model_tot_cnsp_t)
+```
+
+```{r include=FALSE}
+
+# creating regression model for total household earnings 
+
+model_tot_hhearn12m_t   <- svyglm(tot_hhearn12m_t ~ treatment, design)
+
+model_tot_hhearn12m_t
+
+summary(model_tot_hhearn12m_t)
+```
+
+
+
+
+```{r echo=FALSE, warning=FALSE}
+
+#creating well formatted table to present results 
+
+stargazer(model_tot_earn12m_t, model_tot_cnsp_t, model_tot_hhearn12m_t, 
+  type = "text",
+  title="Effects of Deworming Treatment (over 12 months, reported in 2017 USD)", 
+  dep.var.labels=c("Total Individual Earnings","Total Consumption","Total Household Earnings"),
+  covariate.labels=c("Treatment","Control Mean"),
+  digits=3, out = "table1.txt")
+```
+
+
+
+## Interpretation
+
+
+
+The coefficients on the estimates are 213.8 (USD) for total consumption per capita, 63.96 (USD) for total earnings, and 161.0 (USD) for total household earnings. This coeficients represent the average treatment effect. The treatment group consumed 213.8 more USD per capita than the control; the treatment group earned 63.96 more USD than the control, and earned 161.0 more USD per household than control. 
+
+
+## T-test
+
+
+
+```{r echo=FALSE}
+
+# running a t test for total consumption
+
+tt<-svyttest(tot_cnsp_t ~ treatment, design)
+tt
+```
+
+
+
+The 95% confidence interval is -88.59 to 516.27. We cannot say the treatment effect is signigicantly different than zero at a 95% level of confidence because the p-value 0.163 is greater than alpha of 0.05. 
+
+
+
+
+## Male versus Female
+ 
+
+```{r include=FALSE}
+#creating male and female data frames 
+
+male <- filter(worms, female == 0)
+female <- filter(worms, female == 1)
+```
+
+```{r include=FALSE}
+# Create two survey designs for new data sets 
+
+male_design <- svydesign(data=male, ids=~psdpsch98+pupid, weights=~weight)
+female_design <- svydesign(data=female, ids=~psdpsch98+pupid, weights=~weight)
+```
+
+```{r include=FALSE}
+# writing two regression models for male and female, regressing treatment on total earnings 
+
+reg_male <- svyglm(tot_earn12m_t ~ treatment, male_design)
+reg_female <- svyglm(tot_earn12m_t ~ treatment, female_design)
+
+summary(reg_male)
+summary(reg_female)
+```
+```{r echo=FALSE, warning=FALSE}
+# display female results in a well-formatted table 
+
+stargazer(reg_female, 
+  type = "text",
+  title="Effects of Deworming Treatment on Individual Earnings for Females (over 12 months, reported in 2017 USD)", 
+  dep.var.labels=c("Total Individual Earnings"),
+  covariate.labels=c("Treatment","Control Mean"),
+  digits=3, out = "table2.txt")
+```
+```{r include=FALSE}
+15.208/673.533
+```
+
+
+```{r echo=FALSE, warning=FALSE}
+
+# display male results in a well-formatted table 
+
+stargazer(reg_male, 
+  type = "text",
+  title="Effects of Deworming Treatment on Individual Earnings for Males (over 12 months, reported in 2017 USD)", 
+  dep.var.labels=c("Total Individual Earnings"),
+  covariate.labels=c("Treatment","Control Mean"),
+  digits=3, out = "table3.txt")
+```
+```{r include=FALSE}
+107.888/1727.759
+```
+```{r include=FALSE}
+673.533/1727.759
+```
+
+
+
+The males in the treatmeant group experienced a 6% increase in individual earnings, while the females in the treatmeant group experienced a 2% increase in individual earnings. Furthermore, the males in the conntrol group had a mean earnings that was nearly triple that of the females in the control group. Similarly the percent increase for females is about a third of the males. In summary, the males in this sample earn nearly triple that of the female earnings, and benefit more from the treatment, with average increase in income of 6% compared to 2% for females. 
+
+
+# Attrition Analysis 
+
+```{r include=FALSE}
+
+#creating an attrition data set 
+
+attrition <- attrition %>% 
+  filter(attrition_sample == 1, interview_round == 4)
+```
+
+```{r include=FALSE}
+
+#filtering for missing data 
+
+attrition <- drop_na(attrition)
+```
+
+
+
+```{r include=FALSE}
+#creating survey design 
+  
+design2 <- svydesign(data=attrition, ids=~psdpsch98+pupid, weights=~weight)
+
+
+design2
+```
+
+```{r include=FALSE}
+
+#creating regression model 
+
+model_attrition <- svyglm(found ~ treatment, design2)
+
+model_attrition
+
+summary(model_attrition)
+```
+
+
+
+
+
+
+```{r echo=FALSE, warning=FALSE}
+
+# creating a well-formatted table 
+
+stargazer(model_attrition, 
+  type = "text",
+  title="Attrition Results", 
+  dep.var.labels=c("Treatment"),
+  covariate.labels=c("Treatment","Control Mean"),
+  digits=3, out = "table4.txt")
+```
+
+
+
+## Discussion
+
+When you run a regression on whether a person was tracked down based on their treatment status, you are investifating whether or not treatment status had an effect on whether or not an individual was tracked down. Within this regression table the control mean refers to the percentage of those in the control group who were found for the fourth round of interview, while the treatment coefficient refers to the different between the percentage of treatment individuals found and control individuals found. The coefficient here is positive, suggesting that it might have been a little bit easier to track down those in the treatment group, however, the SE and p value are so large that there is no certainity that this difference is statistically significant from zero.
+
+## T-test 
+
+
+
+```{r echo=FALSE}
+
+tt2 <-svyttest(found ~ treatment, design2)
+tt2
+
+```
+When you run a t-test on this design, you find that p value for the estimate of the treatment effect is 0.6133, which indicates that there is a 61% possibility that the 0.013 treatment is due to chance, so you cannot reject the null hypothesis that this estimate is statistically different than zero (that the results for the treatment are statistically different than for the contro group), suggesting that there is no differential attrition. However, failing to reject the null does not mean you accept it. Therefore, you cannot tell from this sample whether or not there is differential attrition, although more likely that not there is no differential attrition. 

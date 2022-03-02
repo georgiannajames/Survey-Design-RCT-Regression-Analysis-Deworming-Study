@@ -1,0 +1,19 @@
+
+Effects of Deworming Treatment on Individual Earnings for Females (over 12 months, reported in 2017 USD)
+=============================================
+                      Dependent variable:    
+                  ---------------------------
+                   Total Individual Earnings 
+---------------------------------------------
+Treatment                   15.208           
+                           (46.906)          
+                                             
+Control Mean              673.553***         
+                           (30.683)          
+                                             
+---------------------------------------------
+Observations                 6,826           
+Log Likelihood            -61,043.290        
+Akaike Inf. Crit.         122,090.600        
+=============================================
+Note:             *p<0.1; **p<0.05; ***p<0.01
