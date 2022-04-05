@@ -97,13 +97,13 @@ stargazer(model_tot_earn12m_t, model_tot_cnsp_t, model_tot_hhearn12m_t,
 
 
 
-The coefficients on the estimates are 213.8 (USD) for total consumption per capita, 63.96 (USD) for total earnings, and 161.0 (USD) for total household earnings. This coeficients represent the average treatment effect. The treatment group consumed 213.8 more USD per capita than the control; the treatment group earned 63.96 more USD than the control, and earned 161.0 more USD per household than control. 
+The coefficients on the estimates are 213.8 (USD) for total consumption per capita, 63.96 (USD) for total earnings, and 161.0 (USD) for total household earnings. These coefficients represent the average treatment effect. The treatment group consumed 213.8 more USD per capita than the control; the treatment group earned 63.96 more USD than the control, and earned 161.0 more USD per household than control. However, these results are not significant at 90% confidence. 
 
 
 ## T-test
 
 
-
+ 
 ```{r echo=FALSE}
 
 # running a t test for total consumption
@@ -180,7 +180,7 @@ stargazer(reg_male,
 
 
 
-The males in the treatmeant group experienced a 6% increase in individual earnings, while the females in the treatmeant group experienced a 2% increase in individual earnings. Furthermore, the males in the conntrol group had a mean earnings that was nearly triple that of the females in the control group. Similarly the percent increase for females is about a third of the males. In summary, the males in this sample earn nearly triple that of the female earnings, and benefit more from the treatment, with average increase in income of 6% compared to 2% for females. 
+The males in the treatment group experienced a 6% increase in individual earnings, while the females in the treatment group experienced a 2% increase in individual earnings. Furthermore, the males in the control group had a mean earnings that was nearly triple that of the females in the control group. Similarly, the percent increase in earnings for females is about a third of the males. In summary, the males in this control group earn nearly triple that of the female earnings in the control group. However, the estimates of the treatment coefficients are not significantly different than zero at 90% confidence. 
 
 
 # Attrition Analysis 
@@ -234,7 +234,7 @@ summary(model_attrition)
 stargazer(model_attrition, 
   type = "text",
   title="Attrition Results", 
-  dep.var.labels=c("Treatment"),
+  dep.var.labels=c("Found"),
   covariate.labels=c("Treatment","Control Mean"),
   digits=3, out = "table4.txt")
 ```
@@ -243,7 +243,7 @@ stargazer(model_attrition,
 
 ## Discussion
 
-When you run a regression on whether a person was tracked down based on their treatment status, you are investifating whether or not treatment status had an effect on whether or not an individual was tracked down. Within this regression table the control mean refers to the percentage of those in the control group who were found for the fourth round of interview, while the treatment coefficient refers to the different between the percentage of treatment individuals found and control individuals found. The coefficient here is positive, suggesting that it might have been a little bit easier to track down those in the treatment group, however, the SE and p value are so large that there is no certainity that this difference is statistically significant from zero.
+The variable ```found``` refers to whether or not a participant could be tracked down to collect data on outcomes. When you run a regression on whether a person was tracked down based on their treatment status, you are investigating whether or not treatment status had an effect on whether or not an individual was tracked down. Within this regression table the control mean refers to the percentage of those in the control group who were found for the fourth round of interview, while the treatment coefficient refers to the different between the percentage of treatment individuals found and control individuals found. The coefficient here is positive, suggesting that it might have been a little bit easier to track down those in the treatment group, however, the SE and p value are so large that there is no certainty that this difference is statistically significant from zero.
 
 ## T-test 
 
@@ -255,4 +255,4 @@ tt2 <-svyttest(found ~ treatment, design2)
 tt2
 
 ```
-When you run a t-test on this design, you find that p value for the estimate of the treatment effect is 0.6133, which indicates that there is a 61% possibility that the 0.013 treatment is due to chance, so you cannot reject the null hypothesis that this estimate is statistically different than zero (that the results for the treatment are statistically different than for the contro group), suggesting that there is no differential attrition. However, failing to reject the null does not mean you accept it. Therefore, you cannot tell from this sample whether or not there is differential attrition, although more likely that not there is no differential attrition. 
+When you run a t-test on this design, you find that p value for the estimate of the treatment effect is 0.6133, which indicates that there is a 61% possibility that the 0.013 coeeficient is due to chance, so you cannot reject the null hypothesis that this estimate is statistically different than zero (that the results for the treatment are statistically different than for the control group), suggesting that there is no differential attrition. However, failing to reject the null does not mean you accept it. Therefore, you cannot tell from this sample whether or not there is differential attrition.

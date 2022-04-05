@@ -41,10 +41,11 @@ library(knitr)
 
 The coefficients on the estimates are 213.8 (USD) for total consumption
 per capita, 63.96 (USD) for total earnings, and 161.0 (USD) for total
-household earnings. This coeficients represent the average treatment
+household earnings. These coefficients represent the average treatment
 effect. The treatment group consumed 213.8 more USD per capita than the
 control; the treatment group earned 63.96 more USD than the control, and
-earned 161.0 more USD per household than control.
+earned 161.0 more USD per household than control. However, these results
+are not significant at 90% confidence.
 
 ## T-test
 
@@ -106,15 +107,15 @@ confidence because the p-value 0.163 is greater than alpha of 0.05.
     ## =============================================
     ## Note:             *p<0.1; **p<0.05; ***p<0.01
 
-The males in the treatmeant group experienced a 6% increase in
-individual earnings, while the females in the treatmeant group
-experienced a 2% increase in individual earnings. Furthermore, the males
-in the conntrol group had a mean earnings that was nearly triple that of
-the females in the control group. Similarly the percent increase for
+The males in the treatment group experienced a 6% increase in individual
+earnings, while the females in the treatment group experienced a 2%
+increase in individual earnings. Furthermore, the males in the control
+group had a mean earnings that was nearly triple that of the females in
+the control group. Similarly, the percent increase in earnings for
 females is about a third of the males. In summary, the males in this
-sample earn nearly triple that of the female earnings, and benefit more
-from the treatment, with average increase in income of 6% compared to 2%
-for females.
+control group earn nearly triple that of the female earnings in the
+control group. However, the estimates of the treatment coefficients are
+not significantly different than zero at 90% confidence.
 
 # Attrition Analysis
 
@@ -123,7 +124,7 @@ for females.
     ## =============================================
     ##                       Dependent variable:    
     ##                   ---------------------------
-    ##                            Treatment         
+    ##                              Found           
     ## ---------------------------------------------
     ## Treatment                    0.013           
     ##                             (0.026)          
@@ -140,17 +141,19 @@ for females.
 
 ## Discussion
 
-When you run a regression on whether a person was tracked down based on
-their treatment status, you are investifating whether or not treatment
-status had an effect on whether or not an individual was tracked down.
-Within this regression table the control mean refers to the percentage
-of those in the control group who were found for the fourth round of
-interview, while the treatment coefficient refers to the different
-between the percentage of treatment individuals found and control
-individuals found. The coefficient here is positive, suggesting that it
-might have been a little bit easier to track down those in the treatment
-group, however, the SE and p value are so large that there is no
-certainity that this difference is statistically significant from zero.
+The variable `found` refers to whether or not a participant could be
+tracked down to collect data on outcomes. When you run a regression on
+whether a person was tracked down based on their treatment status, you
+are investigating whether or not treatment status had an effect on
+whether or not an individual was tracked down. Within this regression
+table the control mean refers to the percentage of those in the control
+group who were found for the fourth round of interview, while the
+treatment coefficient refers to the different between the percentage of
+treatment individuals found and control individuals found. The
+coefficient here is positive, suggesting that it might have been a
+little bit easier to track down those in the treatment group, however,
+the SE and p value are so large that there is no certainty that this
+difference is statistically significant from zero.
 
 ## T-test
 
@@ -168,11 +171,10 @@ certainity that this difference is statistically significant from zero.
 
 When you run a t-test on this design, you find that p value for the
 estimate of the treatment effect is 0.6133, which indicates that there
-is a 61% possibility that the 0.013 treatment is due to chance, so you
+is a 61% possibility that the 0.013 coeeficient is due to chance, so you
 cannot reject the null hypothesis that this estimate is statistically
 different than zero (that the results for the treatment are
-statistically different than for the contro group), suggesting that
+statistically different than for the control group), suggesting that
 there is no differential attrition. However, failing to reject the null
 does not mean you accept it. Therefore, you cannot tell from this sample
-whether or not there is differential attrition, although more likely
-that not there is no differential attrition.
+whether or not there is differential attrition.
